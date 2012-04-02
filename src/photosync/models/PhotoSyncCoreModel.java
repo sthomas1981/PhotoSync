@@ -1,6 +1,6 @@
 package photosync.models;
 
-public class PhotoSyncModel {
+public class PhotoSyncCoreModel {
 	private String inputDirectory;
 	private String outputDirectory;
 

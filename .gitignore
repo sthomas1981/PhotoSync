@@ -4,3 +4,4 @@
 *.class
 /exiftool.exe
 /mediainfo.dll
+/log/*

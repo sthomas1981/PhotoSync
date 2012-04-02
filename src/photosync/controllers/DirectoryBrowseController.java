@@ -6,7 +6,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 import photosync.views.IComponentReachable;
 
 public abstract class DirectoryBrowseController extends PhotoSyncAbstractController {
@@ -18,12 +18,12 @@ public abstract class DirectoryBrowseController extends PhotoSyncAbstractControl
 	protected JFileChooser chooser;
 
 
-	public DirectoryBrowseController(final String iBtnText, final PhotoSyncModel iPhotoSyncModel, final IComponentReachable iPanel) {
+	public DirectoryBrowseController(final String iBtnText, final PhotoSyncModels iPhotoSyncModel, final IComponentReachable iPanel) {
 		super(iBtnText, iPhotoSyncModel, iPanel);
 		this.inputDirectory = new File("");
 		chooser = new JFileChooser();
 		panel = iPanel;
-		photoSyncModel = iPhotoSyncModel;
+		photoSyncModels = iPhotoSyncModel;
 
 		// Init
 		chooser.setCurrentDirectory(inputDirectory);

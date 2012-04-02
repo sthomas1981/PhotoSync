@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import photosync.com.UserConfigResource;
 import photosync.com.XMLFilter;
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 import photosync.views.IComponentReachable;
 
 public class UserConfigLoadController extends PhotoSyncAbstractController {
@@ -17,7 +17,7 @@ public class UserConfigLoadController extends PhotoSyncAbstractController {
 	private JFrame frame;
 	private JFileChooser chooser;
 
-	public UserConfigLoadController(final String iText, final PhotoSyncModel iModel, final IComponentReachable iPanel) {
+	public UserConfigLoadController(final String iText, final PhotoSyncModels iModel, final IComponentReachable iPanel) {
 		super(iText, iModel, iPanel);
 
 		// Init
@@ -34,11 +34,11 @@ public class UserConfigLoadController extends PhotoSyncAbstractController {
 			try {
 				UserConfigResource userConfig = new UserConfigResource(chooser.getSelectedFile().getAbsolutePath());
 
-				photoSyncModel.setInputDirectory(userConfig.getInputDirectory().getAbsolutePath());
+				photoSyncModels.getPhotoSynCoreModel().setInputDirectory(userConfig.getInputDirectory().getAbsolutePath());
 				panel.getComboBoxInput().insertItemAt(userConfig.getInputDirectory().getAbsolutePath(), 0);
 				panel.getComboBoxInput().setSelectedIndex(0);
 
-				photoSyncModel.setOutputDirectory(userConfig.getOutputDirectory().getAbsolutePath());
+				photoSyncModels.getPhotoSynCoreModel().setOutputDirectory(userConfig.getOutputDirectory().getAbsolutePath());
 				panel.getComboBoxOutput().insertItemAt(userConfig.getOutputDirectory().getAbsolutePath(), 0);
 				panel.getComboBoxOutput().setSelectedIndex(0);
 			} catch (Exception e1) {

@@ -2,11 +2,10 @@ package photosync.views;
 
 import java.awt.BorderLayout;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 
 public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponentReachable {
 
@@ -14,7 +13,7 @@ public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponent
 
 	private DirectoryPanel dirPanel;
 
-	public PhotoSyncPanel(final PhotoSyncModel iModel) {
+	public PhotoSyncPanel(final PhotoSyncModels iModel) {
 		super(iModel);
 	}
 
@@ -38,11 +37,6 @@ public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponent
 	@Override
 	public final JList getUserConfigList() {
 		return dirPanel.getUserConfigList();
-	}
-
-	@Override
-	public final DefaultListModel getUserConfigListModel() {
-		return dirPanel.getUserConfigListModel();
 	}
 
 }

@@ -5,15 +5,16 @@ import java.awt.event.MouseListener;
 import java.io.File;
 
 import photosync.com.UserConfigResource;
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncCoreModel;
+import photosync.models.PhotoSyncModels;
 import photosync.views.DirectoryPanel;
 
 public class UserConfigListLoadController implements MouseListener {
 
-	private PhotoSyncModel model;
+	private PhotoSyncModels model;
 	private DirectoryPanel panel;
 
-	public UserConfigListLoadController(final PhotoSyncModel iModel, final DirectoryPanel iPanel) {
+	public UserConfigListLoadController(final PhotoSyncModels iModel, final DirectoryPanel iPanel) {
 		model = iModel;
 		panel = iPanel;
 	}
@@ -25,11 +26,11 @@ public class UserConfigListLoadController implements MouseListener {
 		try {
 			userConfig = new UserConfigResource(filename);
 
-			model.setInputDirectory(userConfig.getInputDirectory().getAbsolutePath());
+			model.getPhotoSynCoreModel().setInputDirectory(userConfig.getInputDirectory().getAbsolutePath());
 			panel.getComboBoxInput().insertItemAt(userConfig.getInputDirectory().getAbsolutePath(), 0);
 			panel.getComboBoxInput().setSelectedIndex(0);
 
-			model.setOutputDirectory(userConfig.getOutputDirectory().getAbsolutePath());
+			model.getPhotoSynCoreModel().setOutputDirectory(userConfig.getOutputDirectory().getAbsolutePath());
 			panel.getComboBoxOutput().insertItemAt(userConfig.getOutputDirectory().getAbsolutePath(), 0);
 			panel.getComboBoxOutput().setSelectedIndex(0);
 		} catch (Exception e1) {

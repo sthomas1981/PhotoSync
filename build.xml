@@ -45,6 +45,7 @@
 	        </fileset>
 	        <fileset dir=".">
 	            <include name="configuration.xml"/>
+	            <include name="log4j-init-file"/>
 	        </fileset>
 	    </copy>
 		<mkdir dir="${dist}/lib/config"/>
@@ -53,6 +54,7 @@
 	            <include name="*.xml"/>
 	        </fileset>
 	    </copy>
+		<mkdir dir="${dist}/lib/log"/>
         <manifest file="MANIFEST.MF">
             <attribute name="Specification-Version" value="1.0"/>
             <attribute name="Specification-Vendor" value="Sebastien Thomas"/>

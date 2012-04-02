@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -16,14 +14,14 @@ import javax.swing.KeyStroke;
 
 import photosync.controllers.UserConfigLoadController;
 import photosync.controllers.UserConfigSaveController;
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 
 public class PhotoSyncMainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1671013850845383862L;
 
 	private PhotoSyncPanel panelPhotoSync;
-	private PhotoSyncModel photoSyncModel;
+	private PhotoSyncModels photoSyncModel;
 
 	public PhotoSyncMainFrame() {
 		super();
@@ -40,7 +38,7 @@ public class PhotoSyncMainFrame extends JFrame {
 	}
 
 	private JTabbedPane buildContentPane() {
-		photoSyncModel = new PhotoSyncModel();
+		photoSyncModel = new PhotoSyncModels();
 
 		JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP);
 		add(tab, BorderLayout.CENTER);

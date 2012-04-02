@@ -5,8 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseListener;
-import java.io.File;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,15 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import photosync.com.XMLFilter;
 import photosync.controllers.InputDirectoryBrowseController;
 import photosync.controllers.OutputDirectoryBrowseController;
 import photosync.controllers.UserConfigListLoadController;
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 
 public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponentReachable {
 
-	public DirectoryPanel(final PhotoSyncModel iModel) {
+	public DirectoryPanel(final PhotoSyncModels iModel) {
 		super(iModel);
 	}
 
@@ -31,7 +28,6 @@ public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponent
 	private static Insets DefaultInset = new Insets(2, 2, 2, 2);
 	private JComboBox comboBoxOutput;
 	private JComboBox comboBoxInput;
-	private DefaultListModel userConfigListModel;
 	private JList userConfigList;
 
 	@Override
@@ -41,13 +37,7 @@ public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponent
 		gblPanelDirectory.columnWeights = new double[]{0.0, 0.0, 12.0, 0.0};
 		setLayout(gblPanelDirectory);
 
-		File configDirectory = new File("config");
-		String[] data = configDirectory.list(new XMLFilter());
-		userConfigListModel = new DefaultListModel();
-		for (String userConfig : data) {
-			userConfigListModel.addElement(userConfig);
-		}
-		userConfigList = new JList(userConfigListModel);
+		userConfigList = new JList(photoSyncModel.getUserConfigModel().getUserConfigListModel());
 		userConfigList.setVisibleRowCount(4);
 		userConfigList.addMouseListener(new UserConfigListLoadController(photoSyncModel, this));
 
@@ -120,11 +110,6 @@ public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponent
 	@Override
 	public final JComboBox getComboBoxInput() {
 		return comboBoxInput;
-	}
-
-	@Override
-	public final DefaultListModel getUserConfigListModel() {
-		return userConfigListModel;
 	}
 
 	@Override

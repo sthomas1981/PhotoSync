@@ -3,14 +3,10 @@ package photosync.controllers;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import photosync.com.UserConfigResource;
-import photosync.com.XMLFilter;
-import photosync.models.PhotoSyncModel;
+import photosync.models.PhotoSyncModels;
 import photosync.views.IComponentReachable;
 
 public class UserConfigSaveController extends PhotoSyncAbstractController {
@@ -18,7 +14,7 @@ public class UserConfigSaveController extends PhotoSyncAbstractController {
 	private static final long serialVersionUID = 8007706631276219746L;
 
 
-	public UserConfigSaveController(final String iText, final PhotoSyncModel iModel, final IComponentReachable iPanel) {
+	public UserConfigSaveController(final String iText, final PhotoSyncModels iModel, final IComponentReachable iPanel) {
 		super(iText, iModel, iPanel);
 	}
 
@@ -32,7 +28,7 @@ public class UserConfigSaveController extends PhotoSyncAbstractController {
 				if (!filename.isEmpty()) {
 					UserConfigResource userConfig = new UserConfigResource(filename, new File(inputDir), new File(outputDir));
 					userConfig.saveConfig();
-					panel.getUserConfigListModel().addElement(filename);
+					//panel.getUserConfigListModel().addElement(filename);
 				} else {
 					JOptionPane.showMessageDialog(null, "Missing parameters", "Error", JOptionPane.ERROR_MESSAGE);
 				}
