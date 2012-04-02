@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Media Synchronization" default="run" basedir=".">
+	
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="dist"  location="dist"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="lo4j.conf" value="log4j-init-file"/>
+    <property name="gen.src" value="gen-src"/>
+    <property name="res" value="res"/>
+    <property name="config.user" value="config"/>
+	
+    <property name="main.class" value="photosync.views.PhotoSyncIHM"/>
+	
+    <path id="compile.class.path">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${lib.dir}" includes="*.dll"/>
+        <fileset dir="${lib.dir}" includes="*.exe"/>
+    </path>
+	
+	<target name="init">
+	    <tstamp>
+	    	<format property="build.time" pattern="dd MMMM yyyy HH:mm:ss"/>
+	    </tstamp>
+	    <mkdir dir="${build}"/>
+	</target>
+	
+	
+	<!-- COM part -->
+	
+    <target name="compile" depends="init" description="Compiling..." >
+        <property name="classpath" refid="compile.class.path"/>
+    	<javac srcdir="${src}" destdir="${build}" classpathref="compile.class.path" includeantruntime="false"/>
+    </target>
+
+	<target name="distribute" depends="compile" description="Generate jars" >
+		<mkdir dir="${dist}/lib"/>
+		<copy toDir="${dist}/lib" failonerror="false">
+	        <fileset dir="${lib.dir}">
+	            <include name="*.jar"/>
+	            <include name="*.dll"/>
+	            <include name="*.exe"/>
+	        </fileset>
+	        <fileset dir=".">
+	            <include name="configuration.xml"/>
+	        </fileset>
+	    </copy>
+		<mkdir dir="${dist}/lib/config"/>
+		<copy toDir="${dist}/lib/config" failonerror="false">
+	        <fileset dir="${config.user}">
+	            <include name="*.xml"/>
+	        </fileset>
+	    </copy>
+        <manifest file="MANIFEST.MF">
+            <attribute name="Specification-Version" value="1.0"/>
+            <attribute name="Specification-Vendor" value="Sebastien Thomas"/>
+            <attribute name="Implementation-Title" value="Sebastien Thomas"/>
+            <attribute name="Implementation-Version" value="1.0"/>
+        	<attribute name="Implementation-Vendor" value="Sebastien Thomas"/>
+            <attribute name="Built-by" value="Sebastien Thomas"/>
+            <attribute name="Main-Class" value="${main.class}"/>
+        </manifest>
+		<jar jarfile="${dist}/lib/PhotoSync-${DSTAMP}.jar" basedir="${build}" manifest="MANIFEST.MF"/>
+	</target>
+	
+    <target name="run" depends="distribute">
+        <java classname="${main.class}" fork="true">
+        	<classpath>
+                <path refid="compile.class.path"/>                
+                <path location="${dist}/lib/PhotoSync-${DSTAMP}.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+	<target name="clean" description="Clean .." >
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+	</target>
+
+</project> 

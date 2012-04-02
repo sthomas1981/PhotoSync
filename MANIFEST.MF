@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.2
+Created-By: 1.6.0_29-b11 (Sun Microsystems Inc.)
+Specification-Version: 1.0
+Specification-Vendor: Sebastien Thomas
+Implementation-Title: Sebastien Thomas
+Implementation-Version: 1.0
+Implementation-Vendor: Sebastien Thomas
+Built-by: Sebastien Thomas
+Main-Class: photosync.views.PhotoSyncIHM
+
