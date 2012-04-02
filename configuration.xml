@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<photoSync>
+	<mediaFile>
+		<!-- photo file handled -->
+		<photoFileHandled><extension>png</extension></photoFileHandled>
+		<photoFileHandled><extension>jpg</extension></photoFileHandled>
+		<photoFileHandled><extension>bmp</extension></photoFileHandled>
+		<photoFileHandled><extension>tiff</extension></photoFileHandled>
+		<!-- audio file handled -->
+		<videoFileHandled><extension>avi</extension></videoFileHandled>
+		<videoFileHandled><extension>3gp</extension></videoFileHandled>
+		<videoFileHandled><extension>mpg</extension></videoFileHandled>
+		<videoFileHandled><extension>mov</extension></videoFileHandled>
+		<videoFileHandled><extension>mp4</extension></videoFileHandled>
+	</mediaFile>
+	<format>
+		<outputDirectory>yyyy MM</outputDirectory>
+	</format>
+</photoSync>
