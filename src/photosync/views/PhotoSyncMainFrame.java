@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import photosync.controllers.UserConfigDeleteController;
 import photosync.controllers.UserConfigLoadController;
 import photosync.controllers.UserConfigSaveController;
 import photosync.models.PhotoSyncModels;
@@ -69,6 +70,10 @@ public class PhotoSyncMainFrame extends JFrame {
 		JMenuItem mntmSave = new JMenuItem(new UserConfigSaveController("Save",  photoSyncModel, panelPhotoSync));
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
+
+		JMenuItem mntmDelete = new JMenuItem(new UserConfigDeleteController("Delete",  photoSyncModel, panelPhotoSync));
+		mntmDelete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
+		mnFile.add(mntmDelete);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));

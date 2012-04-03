@@ -28,7 +28,7 @@ public class UserConfigSaveController extends PhotoSyncAbstractController {
 				if (!filename.isEmpty()) {
 					UserConfigResource userConfig = new UserConfigResource(filename, new File(inputDir), new File(outputDir));
 					userConfig.saveConfig();
-					//panel.getUserConfigListModel().addElement(filename);
+					photoSyncModels.getUserConfigModel().getUserConfigListModel();
 				} else {
 					JOptionPane.showMessageDialog(null, "Missing parameters", "Error", JOptionPane.ERROR_MESSAGE);
 				}

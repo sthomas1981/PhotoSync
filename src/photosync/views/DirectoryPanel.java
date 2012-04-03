@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseListener;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,7 +13,7 @@ import javax.swing.JScrollPane;
 
 import photosync.controllers.InputDirectoryBrowseController;
 import photosync.controllers.OutputDirectoryBrowseController;
-import photosync.controllers.UserConfigListLoadController;
+import photosync.controllers.UserConfigLoadController;
 import photosync.models.PhotoSyncModels;
 
 public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponentReachable {
@@ -39,7 +38,7 @@ public class DirectoryPanel extends AbstractPhotoSyncPanel implements IComponent
 
 		userConfigList = new JList(photoSyncModel.getUserConfigModel().getUserConfigListModel());
 		userConfigList.setVisibleRowCount(4);
-		userConfigList.addMouseListener(new UserConfigListLoadController(photoSyncModel, this));
+		userConfigList.addListSelectionListener(new UserConfigLoadController("", photoSyncModel, this));
 
 		JScrollPane scrollPane = new JScrollPane(userConfigList);
 		scrollPane.setPreferredSize(new Dimension(100, 50));
