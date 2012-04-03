@@ -52,8 +52,8 @@ public class UserConfigLoadController extends PhotoSyncAbstractController implem
 
 	@Override
 	public final void valueChanged(final ListSelectionEvent e) {
-		String filename = "config" + File.separator + panel.getUserConfigList().getSelectedValue().toString();
-		if (filename != "") {
+		if (panel.getUserConfigList().getSelectedValue() != null) {
+			String filename = "config" + File.separator + panel.getUserConfigList().getSelectedValue().toString();
 			UserConfigResource userConfig;
 			try {
 				userConfig = new UserConfigResource(filename);

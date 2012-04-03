@@ -5,3 +5,4 @@
 /exiftool.exe
 /mediainfo.dll
 /log/*
+/config/*.xml
