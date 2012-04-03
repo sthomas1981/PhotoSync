@@ -17,9 +17,15 @@ public class UserConfigModel {
 	public final DefaultListModel getUserConfigListModel() {
 		userConfigList.clear();
 		File configDirectory = new File("config");
-		String[] data = configDirectory.list(new XMLFilter());
-		for (String userConfig : data) {
-			userConfigList.addElement(userConfig);
+		if (configDirectory.exists()) {
+			String[] data = configDirectory.list(new XMLFilter());
+			if (data.length > 0) {
+				for (String userConfig : data) {
+					userConfigList.addElement(userConfig);
+				}
+			}
+		} else {
+			configDirectory.mkdir();
 		}
 		return userConfigList;
 	}
