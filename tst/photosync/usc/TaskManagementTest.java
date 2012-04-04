@@ -31,7 +31,7 @@ public class TaskManagementTest {
 				new File("pub"),
 				new File("pub_tmp"));
 		taskManagerTest.init();
-		taskManagerTest.start();
+		taskManagerTest.run();
 
 		Map<String, Long> statistics = taskManagerTest.getTaskProcessedStatistics();
 		assertEquals(statistics.get("FileListTask"), taskBeforeProcess);
@@ -40,7 +40,7 @@ public class TaskManagementTest {
 		assertEquals(statistics.get("FileCopyTask"), taskProcessed);
 
 		taskManagerTest.init();
-		taskManagerTest.start();
+		taskManagerTest.run();
 		statistics = taskManagerTest.getTaskProcessedStatistics();
 		assertEquals(statistics.get("FileListTask"), taskBeforeProcess);
 		assertEquals(statistics.get("HashTask"), taskProcessedAfterRestart);

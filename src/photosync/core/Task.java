@@ -81,4 +81,8 @@ public class Task implements ITaskable, IComputable, Runnable {
 		return exceptionQueue;
 	}
 
+	public final ConcurrentLinkedQueue<MediaFile> getQueue() {
+		return queue;
+	}
+
 }

@@ -1,15 +1,15 @@
 package photosync.models;
 
 public class PhotoSyncModels {
-	private PhotoSyncCoreModel photoSynCoreModel;
+	private CoreModel photoSynCoreModel;
 	private UserConfigModel userConfigModel;
 
 	public PhotoSyncModels() {
-		photoSynCoreModel = new PhotoSyncCoreModel();
+		photoSynCoreModel = new CoreModel();
 		userConfigModel = new UserConfigModel();
 	}
 
-	public final PhotoSyncCoreModel getPhotoSynCoreModel() {
+	public final CoreModel getPhotoSynCoreModel() {
 		return photoSynCoreModel;
 	}
 

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
-
 import photosync.models.PhotoSyncModels;
 
 public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponentReachable {
@@ -12,6 +11,7 @@ public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponent
 	private static final long serialVersionUID = -7937821371265894596L;
 
 	private DirectoryPanel dirPanel;
+	private CorePanel corePanel;
 
 	public PhotoSyncPanel(final PhotoSyncModels iModel) {
 		super(iModel);
@@ -22,6 +22,8 @@ public class PhotoSyncPanel extends AbstractPhotoSyncPanel implements IComponent
 		setLayout(new BorderLayout(0, 0));
 		dirPanel = new DirectoryPanel(photoSyncModel);
 		add(dirPanel, BorderLayout.NORTH);
+		corePanel = new CorePanel(photoSyncModel);
+		add(corePanel, BorderLayout.CENTER);
 	}
 
 	@Override
