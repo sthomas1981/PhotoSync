@@ -8,6 +8,8 @@ public interface ITaskManageable {
 	void run();
 	void stop();
 
+	boolean hasTaskToProcess();
+
 	Map<String, Long> getTaskProcessedStatistics();
 
 }

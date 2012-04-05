@@ -174,4 +174,9 @@ public class TaskManager implements ITaskManageable {
 	public final ConcurrentLinkedQueue<MediaFile> getSynchronizedItemsQueue() {
 		return fileCopyQueue.getQueue();
 	}
+
+	@Override
+	public final boolean hasTaskToProcess() {
+		return fileCopyQueue.hasTaskToProcess();
+	}
 }

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,22 +29,39 @@ public class SynchronizeController extends CoreAbstractController {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				photoSyncModels.getPhotoSynCoreModel().synchronize();
-				Map<String, DefaultMutableTreeNode> directories = new HashMap<String, DefaultMutableTreeNode>();
-				for (MediaFile media : photoSyncModels.getPhotoSynCoreModel().getSynchronizedItemsQueue()) {
-					DateFormat dfm;
-					try {
-						dfm = new SimpleDateFormat(ConfigResourceController.getInstance().getOutPutDirectoryFormat());
-						String directory = dfm.format(media.getCreationDate());
-						DefaultMutableTreeNode directoryNode = new DefaultMutableTreeNode(directory);
-						if (!directories.containsKey(directory)) {
-							directories.put(directory, directoryNode);
+			}
+		});
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				while (photoSyncModels.getPhotoSynCoreModel().hasTaskToProcess()) {
+					Map<String, DefaultMutableTreeNode> directories = new HashMap<String, DefaultMutableTreeNode>();
+					for (MediaFile media : photoSyncModels.getPhotoSynCoreModel().getSynchronizedItemsQueue()) {
+						DateFormat dfm;
+						try {
+							dfm = new SimpleDateFormat(ConfigResourceController.getInstance().getOutPutDirectoryFormat());
+							String directory = dfm.format(media.getCreationDate());
+							DefaultMutableTreeNode directoryNode = new DefaultMutableTreeNode(directory);
+							if (!directories.containsKey(directory)) {
+								directories.put(directory, directoryNode);
+							}
+							directories.get(directory).add(new DefaultMutableTreeNode(media.getAbsoluteFile()));
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						directories.get(directory).add(new DefaultMutableTreeNode(media.getAbsoluteFile()));
-					} catch (Exception e) {
+					}
+
+					for (DefaultMutableTreeNode treeNode : directories.values()) {
+						photoSyncModels.getPhotoSynCoreModel().getTree().add(treeNode);
+					}
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				};
+				}
 			}
 		});
 	}

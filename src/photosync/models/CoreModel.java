@@ -13,7 +13,7 @@ public class CoreModel {
 	private String inputDirectory;
 	private String outputDirectory;
 	private TaskManager task;
-	private DefaultMutableTreeNode tree = new DefaultMutableTreeNode();
+	private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Synchronized Items");
 
 	public final String getInputDirectory() {
 		return inputDirectory;
@@ -39,6 +39,10 @@ public class CoreModel {
 		task = new TaskManager(new File(inputDirectory), new File(outputDirectory));
 		task.init();
 		task.run();
+	}
+
+	public final boolean hasTaskToProcess() {
+		return task.hasTaskToProcess();
 	}
 
 	public final ConcurrentLinkedQueue<MediaFile> getSynchronizedItemsQueue() {
