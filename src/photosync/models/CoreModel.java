@@ -35,19 +35,13 @@ public class CoreModel {
 		return tree;
 	}
 
-	public final void compare() {
+	public final void synchronize() {
 		task = new TaskManager(new File(inputDirectory), new File(outputDirectory));
 		task.init();
-		task.compare();
+		task.run();
 	}
 
-	public final ConcurrentLinkedQueue<MediaFile> getComparedItemsQueue() {
-		return task.getComparedItemsQueue();
-	}
-
-	public final void synchronize() {
-		if (task != null) {
-			task.synchronize();
-		}
+	public final ConcurrentLinkedQueue<MediaFile> getSynchronizedItemsQueue() {
+		return task.getSynchronizedItemsQueue();
 	}
 }

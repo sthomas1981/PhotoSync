@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 
-import photosync.controllers.CompareController;
+import photosync.controllers.SynchronizeController;
 import photosync.models.PhotoSyncModels;
 
 public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponentsReachable {
@@ -33,7 +33,7 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 		gblTree.rowWeights = new double[]{0.0, 1.0};
 		setLayout(gblTree);
 
-		JButton btnCompare = new JButton(new CompareController("Compare", photoSyncModel, this));
+		JButton btnCompare = new JButton(new SynchronizeController("Compare", photoSyncModel, this));
 		GridBagConstraints gbcBtnCompare = new GridBagConstraints();
 		gbcBtnCompare.insets = DefaultInset;
 		gbcBtnCompare.gridx = 0;

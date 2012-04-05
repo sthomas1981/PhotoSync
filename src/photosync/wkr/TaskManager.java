@@ -171,40 +171,7 @@ public class TaskManager implements ITaskManageable {
 		return taskProcessed;
 	}
 
-	@Override
-	public final void compare() {
-		hashQueue = new HashTask(inputFileQueue);
-		hashQueue.addFilesAlreadyDone(outputFilesSet);
-		threadPoolHashQueue = Executors.newFixedThreadPool(ThreadNumber);
-		CompletionService<Boolean> compServiceHash = new ExecutorCompletionService<Boolean>(threadPoolHashQueue);
-		for (int i = 0; i < ThreadNumber; i++) {
-			compServiceHash.submit(hashQueue, null);
-		}
-
-		creationDateQueue = new CreationDateTask(hashQueue);
-		threadPoolCreationDateQueue = Executors.newFixedThreadPool(ThreadNumber);
-		CompletionService<Boolean> compServiceCreationDate = new ExecutorCompletionService<Boolean>(threadPoolCreationDateQueue);
-		for (int i = 0; i < ThreadNumber; i++) {
-			compServiceCreationDate.submit(creationDateQueue, null);
-		}
-
-		threadPoolHashQueue.shutdown();
-		threadPoolCreationDateQueue.shutdown();
-	}
-
-	public final ConcurrentLinkedQueue<MediaFile> getComparedItemsQueue() {
-		return creationDateQueue.getQueue();
-	}
-
-	@Override
-	public final void synchronize() {
-		fileCopyQueue = new FileCopyTask(creationDateQueue, outputDirectory);
-		threadPoolFileCopyQueue = Executors.newFixedThreadPool(ThreadNumber);
-		CompletionService<Boolean> compServiceFileCopy = new ExecutorCompletionService<Boolean>(threadPoolFileCopyQueue);
-		for (int i = 0; i < ThreadNumber; i++) {
-			compServiceFileCopy.submit(fileCopyQueue, null);
-		}
-
-		threadPoolFileCopyQueue.shutdown();
+	public final ConcurrentLinkedQueue<MediaFile> getSynchronizedItemsQueue() {
+		return fileCopyQueue.getQueue();
 	}
 }
