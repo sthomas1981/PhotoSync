@@ -2,18 +2,19 @@ package photosync.models;
 
 import java.io.File;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import photosync.core.MediaFile;
 import photosync.wkr.TaskManager;
 
-public class CoreModel {
+public class CoreModel implements Runnable {
 
 	private String inputDirectory;
 	private String outputDirectory;
 	private TaskManager task;
 	private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Synchronized Items");
+	private DefaultTreeModel treeModel = new DefaultTreeModel(tree);
 
 	public final String getInputDirectory() {
 		return inputDirectory;
@@ -35,10 +36,8 @@ public class CoreModel {
 		return tree;
 	}
 
-	public final void synchronize() {
-		task = new TaskManager(new File(inputDirectory), new File(outputDirectory));
-		task.init();
-		task.run();
+	public final DefaultTreeModel getTreeModel() {
+		return treeModel;
 	}
 
 	public final boolean hasTaskToProcess() {
@@ -47,5 +46,12 @@ public class CoreModel {
 
 	public final ConcurrentLinkedQueue<MediaFile> getSynchronizedItemsQueue() {
 		return task.getSynchronizedItemsQueue();
+	}
+
+	@Override
+	public final void run() {
+		task = new TaskManager(new File(inputDirectory), new File(outputDirectory));
+		task.init();
+		task.run();
 	}
 }

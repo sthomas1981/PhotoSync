@@ -33,37 +33,23 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 		gblTree.rowWeights = new double[]{0.0, 1.0};
 		setLayout(gblTree);
 
-		JButton btnCompare = new JButton(new SynchronizeController("Compare", photoSyncModel, this));
-		GridBagConstraints gbcBtnCompare = new GridBagConstraints();
-		gbcBtnCompare.insets = DefaultInset;
-		gbcBtnCompare.gridx = 0;
-		gbcBtnCompare.gridy = 0;
-		add(btnCompare, gbcBtnCompare);
-
-		JButton btnSynchronize = new JButton("Synchronize");
+		JButton btnSynchronize = new JButton(new SynchronizeController("Synchronize", photoSyncModel, this));
 		GridBagConstraints gbcBtnSynchronize = new GridBagConstraints();
 		gbcBtnSynchronize.insets = DefaultInset;
-		gbcBtnSynchronize.gridx = 1;
+		gbcBtnSynchronize.gridx = 0;
 		gbcBtnSynchronize.gridy = 0;
+		gbcBtnSynchronize.gridwidth = 2;
 		add(btnSynchronize, gbcBtnSynchronize);
 
-		comparedItemsTree = new JTree(photoSyncModel.getPhotoSynCoreModel().getTree());
+		comparedItemsTree = new JTree(photoSyncModel.getPhotoSynCoreModel().getTreeModel());
 
 		JScrollPane scrollPaneComparedItems = new JScrollPane(comparedItemsTree);
 		GridBagConstraints gbcScrollPaneComparedItems = new GridBagConstraints();
 		gbcScrollPaneComparedItems.insets = DefaultInset;
 		gbcScrollPaneComparedItems.fill = GridBagConstraints.BOTH;
-		gbcScrollPaneComparedItems.gridx = 0;
+		gbcScrollPaneComparedItems.gridx = 1;
 		gbcScrollPaneComparedItems.gridy = 1;
 		add(scrollPaneComparedItems, gbcScrollPaneComparedItems);
-
-		statsPanel = new StatisticsPanel(photoSyncModel);
-		GridBagConstraints gbcStatsPanel = new GridBagConstraints();
-		gbcStatsPanel.anchor = GridBagConstraints.NORTH;
-		gbcStatsPanel.fill = GridBagConstraints.HORIZONTAL;
-		gbcStatsPanel.gridx = 1;
-		gbcStatsPanel.gridy = 1;
-		add(statsPanel, gbcStatsPanel);
 	}
 
 	@Override
