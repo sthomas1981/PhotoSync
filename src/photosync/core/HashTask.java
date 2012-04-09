@@ -24,6 +24,8 @@ public class HashTask extends Task implements IComputable {
 				if (!filesAlreadyDone.contains(file.getHash() + "." + file.getExtension())) {
 					enqueueItemInCurrentQueue(file);
 					filesAlreadyDone.add(file.getHash() + "." + file.getExtension());
+				} else {
+					exceptionQueue.add(file);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

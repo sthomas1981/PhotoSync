@@ -33,7 +33,7 @@ public class TaskManager implements ITaskManageable {
 
 	private static Task inputFileQueue;
 	private static ITaskable outputFileManuallyCopied;
-	private static Set<String> outputFilesSet = new HashSet<String>();
+	private static Set<String> outputFilesSet;
 
 	private ExecutorService threadPoolHashQueue;
 	private ExecutorService threadPoolCreationDateQueue;
@@ -42,6 +42,8 @@ public class TaskManager implements ITaskManageable {
 	private HashTask hashQueue;
 	private Task creationDateQueue;
 	private Task fileCopyQueue;
+	
+	private long filesToProcess;
 
 	public TaskManager(final File inputDir, final File outputDir) {
 		this.inputDirectory = inputDir;
@@ -90,7 +92,11 @@ public class TaskManager implements ITaskManageable {
 		getAllFilesFromInputDirectory(inputDirectory);
 
 		// Get all files in output directory
+		outputFilesSet = new HashSet<String>();
 		getAllFilesFromOutputDirectory(outputDirectory);
+
+		// number of files
+		filesToProcess = inputFileQueue.getCurrentQueueSize();
 
 		// Initialize singleton
 		ConfigResourceController.init();
@@ -175,8 +181,44 @@ public class TaskManager implements ITaskManageable {
 		return fileCopyQueue.getQueue();
 	}
 
+	public final ConcurrentLinkedQueue<MediaFile> getExceptionItemsQueue() {
+		ConcurrentLinkedQueue<MediaFile> exceptionQueue = new ConcurrentLinkedQueue<MediaFile>();
+		for (MediaFile mediaFile : hashQueue.getExceptionQueue()) {
+			exceptionQueue.add(mediaFile);
+		}
+		for (MediaFile mediaFile : creationDateQueue.getExceptionQueue()) {
+			exceptionQueue.add(mediaFile);
+		}
+		for (MediaFile mediaFile : fileCopyQueue.getExceptionQueue()) {
+			exceptionQueue.add(mediaFile);
+		}
+		return exceptionQueue;
+	}
+
 	@Override
 	public final boolean hasTaskToProcess() {
+		if (fileCopyQueue != null) {
 		return fileCopyQueue.hasTaskToProcess();
+		} else {
+			return true;
+		}
+	}
+
+	public final long getFilesToProcess() {
+		return filesToProcess;
+	}
+
+	public final long getFilesStatus() {
+		long total = 0;
+		if (hashQueue != null) {
+			total += hashQueue.getExceptionQueue().size();
+		}
+		if (creationDateQueue != null) {
+			total += creationDateQueue.getExceptionQueue().size();
+		}
+		if (fileCopyQueue != null) {
+			total += fileCopyQueue.getTaskProcessed() + fileCopyQueue.getExceptionQueue().size();
+		}
+		return total;
 	}
 }

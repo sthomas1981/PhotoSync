@@ -17,6 +17,7 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 
 	private static Insets DefaultInset = new Insets(2, 2, 2, 2);
 	private JTree comparedItemsTree;
+	private JTree exceptionItemsTree;
 	private StatisticsPanel statsPanel;
 
 	public CorePanel(final PhotoSyncModels iPhotoSyncModel) {
@@ -28,9 +29,9 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 	protected final void build() {
 		GridBagLayout gblTree = new GridBagLayout();
 		gblTree.columnWidths = new int[]{0, 0};
-		gblTree.rowHeights = new int[]{0, 0};
+		gblTree.rowHeights = new int[]{0, 0, 0};
 		gblTree.columnWeights = new double[]{1.0, 1.0};
-		gblTree.rowWeights = new double[]{0.0, 1.0};
+		gblTree.rowWeights = new double[]{0.0, 2.0, 1.0};
 		setLayout(gblTree);
 
 		JButton btnSynchronize = new JButton(new SynchronizeController("Synchronize", photoSyncModel, this));
@@ -47,14 +48,31 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 		GridBagConstraints gbcScrollPaneComparedItems = new GridBagConstraints();
 		gbcScrollPaneComparedItems.insets = DefaultInset;
 		gbcScrollPaneComparedItems.fill = GridBagConstraints.BOTH;
-		gbcScrollPaneComparedItems.gridx = 1;
+		gbcScrollPaneComparedItems.gridx = 0;
 		gbcScrollPaneComparedItems.gridy = 1;
+		gbcScrollPaneComparedItems.gridwidth = 2;
 		add(scrollPaneComparedItems, gbcScrollPaneComparedItems);
+
+		exceptionItemsTree = new JTree(photoSyncModel.getPhotoSynCoreModel().getExceptionTreeModel());
+
+		JScrollPane scrollPaneExceptionItems = new JScrollPane(exceptionItemsTree);
+		GridBagConstraints gbcScrollPaneExceptionItems = new GridBagConstraints();
+		gbcScrollPaneExceptionItems.insets = DefaultInset;
+		gbcScrollPaneExceptionItems.fill = GridBagConstraints.BOTH;
+		gbcScrollPaneExceptionItems.gridx = 0;
+		gbcScrollPaneExceptionItems.gridy = 2;
+		gbcScrollPaneExceptionItems.gridwidth = 2;
+		add(scrollPaneExceptionItems, gbcScrollPaneExceptionItems);
 	}
 
 	@Override
 	public final JTree getComparedItemsTree() {
 		return comparedItemsTree;
+	}
+
+	@Override
+	public JTree getExceptionItemsTree() {
+		return exceptionItemsTree;
 	}
 
 }

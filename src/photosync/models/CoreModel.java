@@ -15,6 +15,8 @@ public class CoreModel implements Runnable {
 	private TaskManager task;
 	private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Synchronized Items");
 	private DefaultTreeModel treeModel = new DefaultTreeModel(tree);
+	private DefaultMutableTreeNode exceptionTree = new DefaultMutableTreeNode("Items in exception");
+	private DefaultTreeModel exceptionTreeModel = new DefaultTreeModel(exceptionTree);
 
 	public final String getInputDirectory() {
 		return inputDirectory;
@@ -36,8 +38,16 @@ public class CoreModel implements Runnable {
 		return tree;
 	}
 
+	public final DefaultMutableTreeNode getExceptionTree() {
+		return exceptionTree;
+	}
+
 	public final DefaultTreeModel getTreeModel() {
 		return treeModel;
+	}
+
+	public final DefaultTreeModel getExceptionTreeModel() {
+		return exceptionTreeModel;
 	}
 
 	public final boolean hasTaskToProcess() {
@@ -48,10 +58,25 @@ public class CoreModel implements Runnable {
 		return task.getSynchronizedItemsQueue();
 	}
 
-	@Override
-	public final void run() {
+	public final ConcurrentLinkedQueue<MediaFile> getExceptionItemsQueue() {
+		return task.getExceptionItemsQueue();
+	}
+
+	public final long getFilesToProcess() {
+		return task.getFilesToProcess();
+	}
+
+	public final long getFilesStatus() {
+		return task.getFilesStatus();
+	}
+
+	public final void init() {
 		task = new TaskManager(new File(inputDirectory), new File(outputDirectory));
 		task.init();
+	}
+
+	@Override
+	public final void run() {
 		task.run();
 	}
 }
