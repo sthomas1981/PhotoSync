@@ -1,4 +1,4 @@
-package photosync.wkr;
+package photosync.core;
 
 import java.io.File;
 import java.util.Arrays;
@@ -13,17 +13,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import photosync.com.controllers.ConfigResourceController;
-import photosync.core.CreationDateTask;
-import photosync.core.FileCopyTask;
-import photosync.core.FileListTask;
-import photosync.core.HashTask;
-import photosync.core.ITaskable;
-import photosync.core.MediaFile;
-import photosync.core.MediaFileFactory;
-import photosync.core.Task;
 
 public class TaskManager implements ITaskManageable {
+
+	private static Logger logger = Logger.getLogger(TaskManager.class);
 
 	private static final int ThreadNumber = 4;
 	private static final int TimeOut = 3600;
@@ -42,7 +38,6 @@ public class TaskManager implements ITaskManageable {
 	private HashTask hashQueue;
 	private Task creationDateQueue;
 	private Task fileCopyQueue;
-	
 	private long filesToProcess;
 
 	public TaskManager(final File inputDir, final File outputDir) {
@@ -59,6 +54,7 @@ public class TaskManager implements ITaskManageable {
 				try {
 					inputFileQueue.enqueueItemInCurrentQueue(MediaFileFactory.getInstance().getMediaFile(iExtension.toLowerCase(), file.getAbsolutePath()));
 				} catch (Exception e) {
+					logger.error(e.toString());
 				}
 			}
 		}
@@ -77,6 +73,7 @@ public class TaskManager implements ITaskManageable {
 						try {
 							outputFileManuallyCopied.enqueueItemInCurrentQueue(MediaFileFactory.getInstance().getMediaFile(iExtension.toLowerCase(), file.getAbsolutePath()));
 						} catch (Exception e) {
+							logger.error(e.toString());
 						}
 					}
 				}
@@ -90,10 +87,12 @@ public class TaskManager implements ITaskManageable {
 		// Get all files in input directory
 		inputFileQueue = new FileListTask();
 		getAllFilesFromInputDirectory(inputDirectory);
+		logger.info("Files from input directory");
 
 		// Get all files in output directory
 		outputFilesSet = new HashSet<String>();
 		getAllFilesFromOutputDirectory(outputDirectory);
+		logger.info("Files from output directory");
 
 		// number of files
 		filesToProcess = inputFileQueue.getCurrentQueueSize();
@@ -106,6 +105,7 @@ public class TaskManager implements ITaskManageable {
 	@Override
 	public final void run() {
 
+		logger.info("Hash task thread pool start");
 		hashQueue = new HashTask(inputFileQueue);
 		hashQueue.addFilesAlreadyDone(outputFilesSet);
 		threadPoolHashQueue = Executors.newFixedThreadPool(ThreadNumber);
@@ -114,6 +114,7 @@ public class TaskManager implements ITaskManageable {
 			compServiceHash.submit(hashQueue, null);
 		}
 
+		logger.info("Creation date task thread pool start");
 		creationDateQueue = new CreationDateTask(hashQueue);
 		threadPoolCreationDateQueue = Executors.newFixedThreadPool(ThreadNumber);
 		CompletionService<Boolean> compServiceCreationDate = new ExecutorCompletionService<Boolean>(threadPoolCreationDateQueue);
@@ -121,6 +122,7 @@ public class TaskManager implements ITaskManageable {
 			compServiceCreationDate.submit(creationDateQueue, null);
 		}
 
+		logger.info("File copy task thread pool start");
 		fileCopyQueue = new FileCopyTask(creationDateQueue, outputDirectory);
 		threadPoolFileCopyQueue = Executors.newFixedThreadPool(ThreadNumber);
 		CompletionService<Boolean> compServiceFileCopy = new ExecutorCompletionService<Boolean>(threadPoolFileCopyQueue);
@@ -133,36 +135,39 @@ public class TaskManager implements ITaskManageable {
 		threadPoolFileCopyQueue.shutdown();
 
 		try {
+			logger.info("Wait for thread pools to finish");
 			threadPoolHashQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 			threadPoolCreationDateQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 			threadPoolFileCopyQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
 
-		System.out.println("Queue Hash:" + hashQueue.getCurrentQueueSize());
-		System.out.println("Exception queue Hash:" + hashQueue.getExceptionQueue().size());
-		System.out.println("Queue Creation date:" + creationDateQueue.getCurrentQueueSize());
-		System.out.println("Exception queue Creation date:" + creationDateQueue.getExceptionQueue().size());
-		System.out.println("Queue File copy:" + fileCopyQueue.getCurrentQueueSize());
-		System.out.println("Exception queue File copy:" + fileCopyQueue.getExceptionQueue().size());
+		logger.debug("Queue Hash:" + hashQueue.getCurrentQueueSize());
+		logger.debug("Exception queue Hash:" + hashQueue.getExceptionQueue().size());
+
+		logger.debug("Queue Creation date:" + creationDateQueue.getCurrentQueueSize());
+		logger.debug("Exception queue Creation date:" + creationDateQueue.getExceptionQueue().size());
+
+		logger.debug("Queue File copy:" + fileCopyQueue.getCurrentQueueSize());
+		logger.debug("Exception queue File copy:" + fileCopyQueue.getExceptionQueue().size());
 	}
 
 	@Override
 	public final void stop() {
-
+		logger.info("Abort all operations");
+		
 		threadPoolHashQueue.shutdownNow();
 		threadPoolCreationDateQueue.shutdownNow();
 		threadPoolFileCopyQueue.shutdownNow();
 
 		try {
+			logger.info("Wait for thread pools to finish after abort");
 			threadPoolHashQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 			threadPoolCreationDateQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 			threadPoolFileCopyQueue.awaitTermination(TimeOut, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
 
 	}
@@ -219,6 +224,7 @@ public class TaskManager implements ITaskManageable {
 		if (fileCopyQueue != null) {
 			total += fileCopyQueue.getTaskProcessed() + fileCopyQueue.getExceptionQueue().size();
 		}
+		logger.info("Files processed : " + total + " / " + filesToProcess);
 		return total;
 	}
 }

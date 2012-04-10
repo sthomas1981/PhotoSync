@@ -1,7 +1,11 @@
 package photosync.core;
 
+import org.apache.log4j.Logger;
+
 
 public class FileListTask extends Task {
+
+	private static Logger logger = Logger.getLogger(FileListTask.class);
 
 	public FileListTask() {
 		super(null);
@@ -14,8 +18,9 @@ public class FileListTask extends Task {
 
 	@Override
 	public final MediaFile dequeueItemFromPrecedingQueue() {
+		logger.debug("Queue size : " + getCurrentQueueSize());
 		if (getCurrentQueueSize() > 0) {
-			System.out.println(getClass().getName() + "\t- Queue size: " + getCurrentQueueSize());
+			logger.info("Dequeue from current queue");
 			return queue.remove();
 		} else {
 			return null;
@@ -25,5 +30,9 @@ public class FileListTask extends Task {
 	@Override
 	public final boolean hasTaskToProcess() {
 		return !queue.isEmpty();
+	}
+
+	@Override
+	public void compute() {
 	}
 }

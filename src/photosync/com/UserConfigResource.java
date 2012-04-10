@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -21,6 +22,8 @@ import org.jdom.input.SAXBuilder;
 public class UserConfigResource extends File {
 
 	private static final long serialVersionUID = 4978340828067778099L;
+
+	private static Logger logger = Logger.getLogger(UserConfigResource.class);
 
 	private static final String XML_DIRECTORIES = "Directories";
 	private static final String XML_INPUT_DIRECTORY = "Input";
@@ -36,13 +39,17 @@ public class UserConfigResource extends File {
 		Document document = (Document) builder.build(this);
 		Element xmlConfig = document.getRootElement();
 		inputDirectory = new File(xmlConfig.getChildText(XML_INPUT_DIRECTORY));
+		logger.debug("Input directory : " + inputDirectory.getAbsolutePath());
 		outputDirectory = new File(xmlConfig.getChildText(XML_OUTPUT_DIRECTORY));
+		logger.debug("Output directory : " + outputDirectory.getAbsolutePath());
 	}
 
 	public UserConfigResource(final String pathname, final File iInputDirectory, final File iOutputDirectory) {
 		super("config" + File.separator + pathname);
 		inputDirectory = iInputDirectory;
+		logger.debug("Input directory : " + iInputDirectory.getAbsolutePath());
 		outputDirectory = iOutputDirectory;
+		logger.debug("Output directory : " + iOutputDirectory.getAbsolutePath());
 	}
 
 	public final void saveConfig() throws ParserConfigurationException, TransformerException {
@@ -67,6 +74,8 @@ public class UserConfigResource extends File {
 		DOMSource source = new DOMSource(doc);
 		StreamResult result = new StreamResult(this);
 		transformer.transform(source, result);
+
+		logger.info("User config saved");
 	}
 
 	public final void deleteConfig() {

@@ -14,7 +14,8 @@ public class StatusController extends IStatusAbstractController {
 	}
 
 	@Override
-	public void actionPerformed(final ActionEvent e) {
+	public final void actionPerformed(final ActionEvent e) {
+		photoSyncModels.getPhotoSynCoreModel().abort();
 	}
 
 }

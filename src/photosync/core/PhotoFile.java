@@ -33,7 +33,7 @@ public class PhotoFile extends MediaFile implements IMediaSynchronizable {
 	}
 
 	@Override
-	public void computeCreationDate() throws CreationDateNotFoundException {
+	public final void computeCreationDate() throws CreationDateNotFoundException {
 		try {
 			Runtime runtime = Runtime.getRuntime();
 			Process process;

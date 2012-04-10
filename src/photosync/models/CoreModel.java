@@ -6,7 +6,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import photosync.core.MediaFile;
-import photosync.wkr.TaskManager;
+import photosync.core.TaskManager;
 
 public class CoreModel implements Runnable {
 
@@ -68,6 +68,10 @@ public class CoreModel implements Runnable {
 
 	public final long getFilesStatus() {
 		return task.getFilesStatus();
+	}
+
+	public void abort() {
+		task.stop();
 	}
 
 	public final void init() {

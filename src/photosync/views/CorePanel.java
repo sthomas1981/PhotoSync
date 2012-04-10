@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.TreePath;
 
 import photosync.controllers.SynchronizeController;
 import photosync.models.PhotoSyncModels;
@@ -43,6 +44,7 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 		add(btnSynchronize, gbcBtnSynchronize);
 
 		comparedItemsTree = new JTree(photoSyncModel.getPhotoSynCoreModel().getTreeModel());
+		comparedItemsTree.expandPath(new TreePath(photoSyncModel.getPhotoSynCoreModel().getTree()));
 
 		JScrollPane scrollPaneComparedItems = new JScrollPane(comparedItemsTree);
 		GridBagConstraints gbcScrollPaneComparedItems = new GridBagConstraints();
@@ -54,6 +56,7 @@ public class CorePanel extends AbstractPhotoSyncPanel implements ICoreComponents
 		add(scrollPaneComparedItems, gbcScrollPaneComparedItems);
 
 		exceptionItemsTree = new JTree(photoSyncModel.getPhotoSynCoreModel().getExceptionTreeModel());
+		exceptionItemsTree.expandPath(new TreePath(photoSyncModel.getPhotoSynCoreModel().getExceptionTree()));
 
 		JScrollPane scrollPaneExceptionItems = new JScrollPane(exceptionItemsTree);
 		GridBagConstraints gbcScrollPaneExceptionItems = new GridBagConstraints();

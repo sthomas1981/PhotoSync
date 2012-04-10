@@ -28,9 +28,9 @@ public abstract class MediaFile extends File implements IMediaSynchronizable {
 
 	@Override
 	public final void computeHash() throws IOException {
-		logger.debug("Compute md5sum");
 		FileInputStream fis = new FileInputStream(this);
 		md5SumHash = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
+		logger.debug("Compute md5sum : " + md5SumHash);
 	}
 
 	@Override

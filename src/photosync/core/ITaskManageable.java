@@ -1,4 +1,4 @@
-package photosync.wkr;
+package photosync.core;
 
 import java.util.Map;
 

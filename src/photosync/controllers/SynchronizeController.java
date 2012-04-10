@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import photosync.com.controllers.ConfigResourceController;
 import photosync.core.MediaFile;
@@ -56,14 +57,16 @@ public class SynchronizeController extends CoreAbstractController {
 		for (String key : listKey) {
 			photoSyncModels.getPhotoSynCoreModel().getTreeModel().insertNodeInto(directories.get(key), photoSyncModels.getPhotoSynCoreModel().getTree(), photoSyncModels.getPhotoSynCoreModel().getTree().getChildCount());
 		}
+
+		coreComponents.getComparedItemsTree().expandPath(new TreePath(photoSyncModels.getPhotoSynCoreModel().getTree()));
 	}
 
 	private void buildExceptionTree() {
-		Map<String, DefaultMutableTreeNode> directories = new HashMap<String, DefaultMutableTreeNode>();
 		for (MediaFile media : photoSyncModels.getPhotoSynCoreModel().getExceptionItemsQueue()) {
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(media.getAbsoluteFile());
 			photoSyncModels.getPhotoSynCoreModel().getExceptionTreeModel().insertNodeInto(node, photoSyncModels.getPhotoSynCoreModel().getExceptionTree(), photoSyncModels.getPhotoSynCoreModel().getExceptionTree().getChildCount());
 		}
+		coreComponents.getExceptionItemsTree().expandPath(new TreePath(photoSyncModels.getPhotoSynCoreModel().getExceptionTree()));
 	}
 
 	@Override

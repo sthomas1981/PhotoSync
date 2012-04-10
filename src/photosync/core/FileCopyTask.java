@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import org.apache.log4j.Logger;
+
 import photosync.com.controllers.ConfigResourceController;
 
 public class FileCopyTask extends Task implements IComputable {
+
+	private static Logger logger = Logger.getLogger(FileCopyTask.class);
 
 	private File outputDirectory;
 	private DateFormat dfm;
@@ -30,14 +34,16 @@ public class FileCopyTask extends Task implements IComputable {
 	public final void compute() {
 		MediaFile file = dequeueItemFromPrecedingQueue();
 		if (file != null) {
-			System.out.println(getClass().getName() + "\t- File dequeued : " + file.getAbsolutePath());
+			logger.info("Computing file copy task on file : " + file.getAbsolutePath());
 			try {
 				if (file.getHash() != null && file.getCreationDate() != null) {
 					file.writeToFileSystem(outputDirectory.getAbsolutePath(), dfm);
 					enqueueItemInCurrentQueue(file);
+					logger.debug("File copy done on file : " + file.getAbsolutePath());
 				}
 			} catch (IOException e) {
 				exceptionQueue.add(file);
+				logger.error(e.toString());
 			}
 		}
 	}

@@ -10,8 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import photosync.wkr.ITaskManageable;
-import photosync.wkr.TaskManager;
+import photosync.core.ITaskManageable;
+import photosync.core.TaskManager;
 
 public class TaskManagementTest {
 

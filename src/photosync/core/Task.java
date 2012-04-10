@@ -2,11 +2,15 @@ package photosync.core;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.log4j.Logger;
 
-public class Task implements ITaskable, IComputable, Runnable {
+
+public abstract class Task implements ITaskable, IComputable, Runnable {
 
 	protected ConcurrentLinkedQueue<MediaFile> queue = new ConcurrentLinkedQueue<MediaFile>();
 	protected ConcurrentLinkedQueue<MediaFile> exceptionQueue = new ConcurrentLinkedQueue<MediaFile>();
+
+	private static Logger logger = Logger.getLogger(Task.class);
 
 	protected ITaskable queueTask;
 
@@ -20,15 +24,16 @@ public class Task implements ITaskable, IComputable, Runnable {
 
 	@Override
 	public final void enqueueItemInCurrentQueue(final MediaFile item) {
-		System.out.println(getClass().getName() + "\t- Enqueueing item " + item.getAbsolutePath());
+		logger.info("Enqueueing item " + item.getAbsolutePath());
 		taskProcessed++;
 		queue.add(item);
 	}
 
 	@Override
 	public MediaFile dequeueItemFromPrecedingQueue() {
+		logger.debug("Queue size: " + queueTask.getCurrentQueueSize());
 		if (queueTask.getCurrentQueueSize() > 0) {
-			System.out.println(getClass().getName() + "\t- Queue size: " + queueTask.getCurrentQueueSize());
+			logger.info("Dequeue from preceding task queue");
 			return queueTask.dequeueItemFromCurrentQueue();
 		} else {
 			return null;
@@ -37,6 +42,7 @@ public class Task implements ITaskable, IComputable, Runnable {
 
 	@Override
 	public final MediaFile dequeueItemFromCurrentQueue() {
+		logger.info("Dequeue from current queue");
 		return queue.poll();
 	}
 
@@ -52,12 +58,12 @@ public class Task implements ITaskable, IComputable, Runnable {
 		}
 	}
 
-
-	public void compute() {
-	}
+	public abstract void compute();
 
 	public final void run() {
 		while (hasTaskToProcess()) {
+
+			logger.info("Run process");
 
 			while (queueTask.getCurrentQueueSize() > 0) {
 				compute();
@@ -71,7 +77,6 @@ public class Task implements ITaskable, IComputable, Runnable {
 			}
 		}
 	}
-
 
 	public final Long getTaskProcessed() {
 		return taskProcessed;
